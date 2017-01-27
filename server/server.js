@@ -67,7 +67,7 @@ io.on('connection',(socket)=>{
 
 
        io.emit('newMessage',generateMessage(message.from,message.text));
-      callback("This is from server");
+      callback();
 
     //  socket.broadcast.emit('newMessage',{
     //      from:message.from,

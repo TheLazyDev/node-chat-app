@@ -2,11 +2,6 @@ var socket = io();
 
 socket.on('connect',function (){
     console.log('Connected to server');
-
-    // socket.emit('createMessage',{
-    //     from:'Bhavarsh Singh',
-    //     text:"Hey whatsup?"
-    // })
 })
 
 socket.on('disconnect',function (){
@@ -15,15 +10,8 @@ socket.on('disconnect',function (){
 
 
 
-// socket.on('newEmail',function (email){
-//     console.log("New Email!",email);
-
-// })
-
-
-
 socket.on('newMessage',function (msg){
-   console.log('newMessage',msg);
+  //  console.log('newMessage',msg);
 
 
    var li = $('<li></li>');
@@ -34,15 +22,6 @@ socket.on('newMessage',function (msg){
 })
 
 
-
-
-
-// socket.emit("createMessage",{
-//   from: "frank",
-//   text: "hi"
-// },function (data){
-//   console.log(data);
-// })
 
 socket.on('newLocationMessage',function(message){
     var li = $('<li></li>');
@@ -60,11 +39,13 @@ socket.on('newLocationMessage',function(message){
 $('#message-form').on('submit', function (e) {
     e.preventDefault();
 
+    var msgTextBox = $("[name=msg]");
+
     socket.emit('createMessage',{
       from: "User",
-      text: $("[name=msg]").val()
+      text: msgTextBox.val()
     },function (){
-     
+        msgTextBox.val('');
     })
 })
 
@@ -77,13 +58,22 @@ locationButton.on('click',function (e){
 
    }
 
+
+   locationButton.attr('disabled','disabled').text("Sending location ...");
+
    navigator.geolocation.getCurrentPosition(function (position){
+
+     locationButton.removeAttr('disabled').text("Send Location");
+
        socket.emit('createLocationMessage',{
          latitude: position.coords.latitude,
          longitude: position.coords.longitude
        });
+
+
    },function (){
-     alert("Unable to fetch location")
+      locationButton.removeAttr('disabled').text("Send Location");
+     alert("Unable to fetch location");
    })
 })
 
