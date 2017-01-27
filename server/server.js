@@ -8,7 +8,7 @@ const socketIO = require("socket.io"); // "socket.io" a web server library
 const path = require('path'); // "path" a core module of node.js
 
 
-const {generateMessage} = require("./utils/message");
+const {generateMessage,generateLocationMessage} = require("./utils/message");
 
 
 const publicPath = path.join(__dirname,'../public'); // created const of directory where public folder is located using path
@@ -75,6 +75,17 @@ io.on('connection',(socket)=>{
     //      createdAt: new Date().getTime()
     //  })
    })
+
+
+
+    socket.on('createLocationMessage',(coords)=>{
+
+
+        io.emit('newLocationMessage',generateLocationMessage('Admin',coords.latitude,coords.longitude));
+    })
+
+
+
 
 
 

@@ -7,4 +7,15 @@ var generateMessage = (from,text)=>{
 }
 
 
-module.exports = {generateMessage}
+
+
+var generateLocationMessage = (from,lat,longi)=>{
+    return {
+        from,
+        url:`https://www.google.com/maps?q=${lat},${longi}`,
+        createdAt: new Date().getTime()
+
+    }
+}
+
+module.exports = {generateMessage,generateLocationMessage}
