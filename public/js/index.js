@@ -14,9 +14,12 @@ socket.on('newMessage',function (msg){
   //  console.log('newMessage',msg);
 
 
+  var formattedTime = moment(msg.createdAt).format('h:mm:ss a');
+
+
    var li = $('<li></li>');
 
-   li.text(`${msg.from} : ${msg.text}`);
+   li.text(`${msg.from} ${formattedTime} : ${msg.text}`);
 
    $('#messages').append(li);
 })
@@ -24,10 +27,14 @@ socket.on('newMessage',function (msg){
 
 
 socket.on('newLocationMessage',function(message){
+
+
+
+    var formattedTime = moment(message.createdAt).format('h:mm:ss a');
     var li = $('<li></li>');
     var a = $('<a target="_blank"> My Current Location </a>');
 
-    li.text(`${message.from}:`);
+    li.text(`${message.from} ${formattedTime} :`);
     a.attr("href",message.url);
      
     li.append(a);
@@ -38,8 +45,13 @@ socket.on('newLocationMessage',function(message){
 
 $('#message-form').on('submit', function (e) {
     e.preventDefault();
-
+     
     var msgTextBox = $("[name=msg]");
+
+
+    if(msgTextBox.val() === ''){
+      return alert("Please Type something");
+    }
 
     socket.emit('createMessage',{
       from: "User",
